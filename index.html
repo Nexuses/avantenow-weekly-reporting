@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AvanteNow — Weekly Activity Report · 18–27 March 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg:#f7f8fa; --white:#fff; --border:#e8eaed; --border2:#f0f1f3;
+  --text:#111214; --t2:#6b7280; --t3:#9ca3af;
+  --green:#0d9488; --greenl:#ccfbf1; --greenbg:#f0fdfa;
+  --blue:#2563eb; --bluel:#dbeafe; --bluebg:#eff6ff;
+  --violet:#7c3aed; --violetl:#ede9fe; --violetbg:#f5f3ff;
+  --teal:#0f766e; --teall:#99f6e4; --tealbg:#f0fdfa;
+  --amber:#d97706; --amberl:#fef3c7; --amberbg:#fffbeb;
+  --red:#dc2626; --redl:#fee2e2;
+  --brand:#0d9488; --brandl:#ccfbf1; --brandbg:#f0fdfa;
+  --ink:#1a1d23;
+  --sans:'Inter',sans-serif; --mono:'DM Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:52px;position:sticky;top:0;z-index:100;}
+.nav-brand{display:flex;align-items:center;gap:16px;min-width:0;flex-shrink:1;justify-self:start;}
+.nav-logo-img{height:28px;width:auto;max-width:140px;object-fit:contain;display:block;}
+.nav-logo-img--avantenow{height:40px;max-width:220px;}
+.nav-week{font-family:var(--mono);font-size:0.8rem;color:var(--t2);justify-self:center;text-align:center;white-space:nowrap;}
+.nav-actions{display:flex;gap:8px;justify-self:end;}
+.btn{font-family:var(--sans);font-size:0.75rem;font-weight:500;padding:6px 16px;border-radius:6px;border:1px solid var(--border);cursor:pointer;background:var(--white);color:var(--t2);transition:all .15s;}
+.btn:hover{border-color:#aaa;color:var(--text);}
+.btn-primary{background:var(--brand);color:#fff;border-color:var(--brand);}
+.btn-primary:hover{background:var(--teal);}
+
+/* LAYOUT */
+.dash-wrap{max-width:1200px;margin:0 auto;padding:32px 24px 60px;}
+
+/* HEADER */
+.report-header{display:grid;grid-template-columns:1fr auto 1fr;align-items:flex-end;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);gap:8px;}
+.report-title{font-size:1.45rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;justify-self:start;}
+.report-meta{display:flex;align-items:center;gap:16px;justify-self:center;}
+.report-header-spacer{min-height:0;justify-self:end;}
+.week-tag{font-family:var(--mono);font-size:0.8rem;color:var(--t2);background:var(--bg);border:1px solid var(--border);padding:6px 14px;border-radius:20px;}
+
+/* KPI */
+.kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kpi{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+.kpi-label{font-size:0.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t2);margin-bottom:8px;}
+.kpi-value{font-size:1.75rem;font-weight:700;color:var(--ink);letter-spacing:-.03em;line-height:1;}
+.kpi-change{font-size:0.7rem;margin-top:6px;font-weight:500;}
+.up{color:var(--green);} .neu{color:var(--t2);}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;}
+.g32{display:grid;grid-template-columns:1.5fr 1fr;gap:12px;margin-bottom:12px;}
+.mb{margin-bottom:12px;}
+
+/* CARD */
+.card{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:20px;}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.card-title{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);}
+.card-link{font-size:0.68rem;color:var(--blue);text-decoration:none;font-weight:500;}
+.card-link:hover{text-decoration:underline;}
+
+/* EMAIL CAMPAIGN STATS */
+.email-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+.email-stat-box{background:var(--bg);border-radius:8px;padding:14px 16px;text-align:center;}
+.email-stat-val{font-size:1.6rem;font-weight:700;color:var(--ink);letter-spacing:-.03em;line-height:1;}
+.email-stat-label{font-size:0.62rem;color:var(--t2);margin-top:5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+.email-stat-sub{font-size:0.65rem;color:var(--t3);margin-top:2px;}
+.email-highlight{color:var(--brand);}
+
+.delivery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.delivery-box{background:var(--bg);border-radius:8px;padding:12px;text-align:center;}
+.delivery-val{font-size:1.2rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+.delivery-label{font-size:0.6rem;color:var(--t2);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+
+.campaign-info{border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:14px;}
+.campaign-info-row{display:flex;gap:8px;margin-bottom:6px;font-size:0.78rem;}
+.campaign-info-row:last-child{margin-bottom:0;}
+.ci-label{color:var(--t2);font-weight:600;min-width:90px;flex-shrink:0;}
+.ci-val{color:var(--ink);}
+
+/* ACTIVITY LIST */
+.act-list{list-style:none;}
+.act-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border2);font-size:0.8rem;}
+.act-row:last-child{border-bottom:none;}
+.act-icon{width:18px;height:18px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:700;margin-top:1px;}
+.icon-done{background:var(--greenl);color:var(--green);}
+.icon-prog{background:var(--bluel);color:var(--blue);}
+.act-body{line-height:1.4;color:var(--ink);}
+.act-lnk{font-size:0.65rem;color:var(--blue);text-decoration:none;display:block;margin-top:1px;}
+.act-lnk:hover{text-decoration:underline;}
+
+/* SECTION HEADERS */
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.section-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;flex-shrink:0;background:var(--greenl);color:var(--brand);}
+.section-title-text{font-size:0.8rem;font-weight:700;color:var(--ink);}
+.section-sub{font-size:0.68rem;color:var(--t2);margin-top:1px;}
+.section-divider{flex:1;height:1px;background:var(--border);}
+
+/* TAGS */
+.tag{display:inline-block;font-size:0.68rem;font-weight:600;padding:3px 10px;border-radius:4px;margin:3px 3px 3px 0;}
+.tag-green{background:var(--greenbg);color:var(--brand);}
+.tag-blue{background:var(--bluebg);color:var(--blue);}
+.tag-amber{background:var(--amberbg);color:var(--amber);}
+.tag-violet{background:var(--violetbg);color:var(--violet);}
+
+/* SOCIAL POSTS */
+.post-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border2);}
+.post-row:last-child{border-bottom:none;}
+.post-icon{width:22px;height:22px;border-radius:5px;background:#0077b5;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;flex-shrink:0;}
+.post-label{font-size:0.8rem;font-weight:500;color:var(--ink);}
+.post-type{font-size:0.65rem;color:var(--t3);margin-top:1px;font-family:var(--mono);}
+
+/* ASSETS GRID */
+.asset-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.asset-box{background:var(--bg);border-radius:8px;padding:12px 14px;}
+.asset-title{font-size:0.75rem;font-weight:600;color:var(--ink);margin-bottom:3px;}
+.asset-desc{font-size:0.65rem;color:var(--t2);}
+.asset-link{font-size:0.63rem;color:var(--blue);text-decoration:none;display:inline-block;margin-top:4px;}
+.asset-link:hover{text-decoration:underline;}
+
+/* STRATEGY */
+.strat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.strat-box{background:var(--bg);border-radius:8px;padding:14px;}
+.strat-tag{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:6px;}
+.strat-text{font-size:0.78rem;color:var(--ink);line-height:1.5;}
+.strat-bullets{list-style:none;margin-top:6px;}
+.strat-bullets li{font-size:0.74rem;color:var(--t2);padding:2px 0 2px 12px;position:relative;line-height:1.4;}
+.strat-bullets li::before{content:'·';position:absolute;left:0;color:var(--t3);font-size:1rem;line-height:1.1;}
+
+/* FOOTER */
+.dash-footer{text-align:center;padding:20px 0 0;margin-top:4px;font-size:0.65rem;color:var(--t3);font-family:var(--mono);border-top:1px solid var(--border);}
+
+/* REVIEW ITEMS */
+.review-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border2);font-size:0.8rem;}
+.review-row:last-child{border-bottom:none;}
+.review-badge{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:4px;background:var(--amberbg);color:var(--amber);flex-shrink:0;margin-top:1px;}
+.review-text{color:var(--ink);font-weight:500;line-height:1.4;}
+.review-link{font-size:0.65rem;color:var(--blue);text-decoration:none;display:block;margin-top:2px;}
+.review-link:hover{text-decoration:underline;}
+
+@media(max-width:768px){
+  nav{padding:0 16px;grid-template-columns:1fr;grid-template-rows:auto auto auto;height:auto;gap:10px;padding-top:12px;padding-bottom:12px;}
+  .nav-brand{justify-self:center;order:1;}
+  .nav-week{order:2;}
+  .nav-actions{justify-self:center;order:3;}
+  .nav-logo-img{height:22px;max-width:100px;}
+  .nav-logo-img--avantenow{height:30px;max-width:160px;}
+  .report-header{grid-template-columns:1fr;text-align:center;}
+  .report-title{justify-self:center;}
+  .report-meta{justify-self:center;}
+  .report-header-spacer{display:none;}
+  .kpi-strip{grid-template-columns:1fr 1fr;}
+  .g2,.g3,.g32{grid-template-columns:1fr;}
+  .strat-grid{grid-template-columns:1fr;}
+  .email-stats-grid{grid-template-columns:1fr 1fr;}
+  .delivery-grid{grid-template-columns:1fr 1fr;}
+  .asset-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <img src="https://avantenow.s3.us-east-2.amazonaws.com/Group_1597881441.png" alt="AvanteNow" class="nav-logo-img nav-logo-img--avantenow" width="220" height="40">
+    <img src="https://cdn-nexlink.s3.us-east-2.amazonaws.com/Nexuses-full-logo-dark_8d412ea3-bf11-4fc6-af9c-bee7e51ef494.png" alt="Nexuses" class="nav-logo-img" width="140" height="28">
+  </div>
+  <div class="nav-week">18 Mar – 27 Mar 2026</div>
+  <div class="nav-actions">
+    <button class="btn btn-primary" onclick="window.print()">Export / Print</button>
+  </div>
+</nav>
+
+<div class="dash-wrap">
+
+  <!-- HEADER -->
+  <div class="report-header">
+    <div class="report-title">Weekly Activity Report</div>
+    <div class="report-meta">
+      <span class="week-tag">18 Mar – 27 Mar 2026</span>
+    </div>
+    <div class="report-header-spacer" aria-hidden="true"></div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-strip" style="margin-bottom:20px;">
+    <div class="kpi">
+      <div class="kpi-label">Email Campaigns</div>
+      <div class="kpi-value">1</div>
+      <div class="kpi-change up">Launched · Webinar in progress</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Email Open Rate</div>
+      <div class="kpi-value">42.6%</div>
+      <div class="kpi-change up">~27 of 63 emails opened</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">LinkedIn Posts</div>
+      <div class="kpi-value">3</div>
+      <div class="kpi-change neu">Published this week</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Assets Created</div>
+      <div class="kpi-value">12+</div>
+      <div class="kpi-change up">Collateral & campaigns</div>
+    </div>
+  </div>
+
+  <!-- ROW 1: Email Campaign Reporting + Chart -->
+  <div class="g32 mb">
+
+    <!-- Email Campaign Detail -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Email Campaign Report — Bright Pattern Follow-Up</span>
+      </div>
+
+      <div class="campaign-info">
+        <div class="campaign-info-row"><span class="ci-label">Sent On</span><span class="ci-val">Wednesday, 18 March 2026 · 63 contacts</span></div>
+        <div class="campaign-info-row"><span class="ci-label">Subject</span><span class="ci-val">Following up on the Bright Pattern session</span></div>
+        <div class="campaign-info-row"><span class="ci-label">Contact List</span><span class="ci-val">AvanteNow × BrightPattern Webinar Data</span></div>
+        <div class="campaign-info-row"><span class="ci-label">From</span><span class="ci-val">Amina Zayed &lt;amina.z@avantenow.co&gt;</span></div>
+      </div>
+
+      <div style="margin-bottom:10px;">
+        <div class="card-title" style="margin-bottom:10px;">Delivery Rates</div>
+        <div class="delivery-grid">
+          <div class="delivery-box" style="background:var(--greenbg);">
+            <div class="delivery-val email-highlight">100%</div>
+            <div class="delivery-label">Delivered</div>
+            <div class="email-stat-sub">63 emails</div>
+          </div>
+          <div class="delivery-box">
+            <div class="delivery-val">0%</div>
+            <div class="delivery-label">Blocked</div>
+          </div>
+          <div class="delivery-box">
+            <div class="delivery-val">0%</div>
+            <div class="delivery-label">Soft Bounced</div>
+          </div>
+          <div class="delivery-box">
+            <div class="delivery-val">0%</div>
+            <div class="delivery-label">Hard Bounced</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card-title" style="margin-bottom:10px;">Contact Engagement</div>
+        <div class="email-stats-grid">
+          <div class="email-stat-box" style="background:var(--greenbg);">
+            <div class="email-stat-val email-highlight">42.6%</div>
+            <div class="email-stat-label">Opened</div>
+            <div class="email-stat-sub">~27 emails</div>
+          </div>
+          <div class="email-stat-box">
+            <div class="email-stat-val">0%</div>
+            <div class="email-stat-label">Clicked</div>
+            <div class="email-stat-sub">0 emails</div>
+          </div>
+          <div class="email-stat-box">
+            <div class="email-stat-val">0%</div>
+            <div class="email-stat-label">Unsubscribed</div>
+            <div class="email-stat-sub">0 emails</div>
+          </div>
+          <div class="email-stat-box">
+            <div class="email-stat-val">0%</div>
+            <div class="email-stat-label">Spam Reports</div>
+            <div class="email-stat-sub">0 emails</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="card">
+      <div class="card-head"><span class="card-title">Campaign Engagement Overview</span></div>
+      <div style="position:relative;height:200px;margin-bottom:20px;"><canvas id="engagementChart"></canvas></div>
+      <div class="card-head" style="margin-top:8px;margin-bottom:10px;"><span class="card-title">Delivery Breakdown</span></div>
+      <div style="position:relative;height:130px;"><canvas id="deliveryChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ROW 2: Completed Activities + In Progress -->
+  <div class="g2 mb">
+
+    <!-- Completed -->
+    <div class="card">
+      <div class="card-head"><span class="card-title">Completed This Week</span></div>
+      <ul class="act-list">
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            AMS 2-Pager content created and shared for review
+            <a href="https://docs.google.com/document/d/1nIM3yiI6RxV1Slg7AysDjPZnk8CzSFc5mdRa3At1ETA/edit?usp=sharing" target="_blank" class="act-lnk">↗ View Document</a>
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            Email pitch drafts prepared for Senovo &amp; Equiti
+            <a href="https://docs.google.com/document/d/1ENiJQyPd8jRTCdpIJsrVvmpiNw1I22UfxKyLwnKxsjQ/edit?usp=sharing" target="_blank" class="act-lnk">↗ View Email Pitch</a>
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">Lead generation campaign launched for Senovo &amp; Equiti</div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            Eid Al Fitr greetings post published on LinkedIn
+            <a href="https://www.linkedin.com/posts/avantenow_eidmubarak-eidulfitr-activity-7440615652173" target="_blank" class="act-lnk">↗ View LinkedIn Post</a>
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            German Bank case study post published on LinkedIn
+            <a href="https://www.linkedin.com/posts/avantenow_german-bank-case-study-activity-7442485079" target="_blank" class="act-lnk">↗ View LinkedIn Post</a>
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">Eid Mubarak personalised greeting prepared for Aditya</div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            Visual EDM for Bright Pattern webinar participants created and email campaign launched (63 contacts, ~42.6% open rate)
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            Introductory visual EDM created and shared
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            Webinar Agenda shared with stakeholders
+            <a href="https://docs.google.com/document/d/1lYyE_gxdFRYRXbvXwGDua1_lkSqIJ2-56rlX46uwFVU/edit?usp=sharing" target="_blank" class="act-lnk">↗ View Agenda</a>
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            Webinar checklist created and shared
+            <a href="https://docs.google.com/spreadsheets/d/1XB8lqPyHnbjMbXa1tbM2UUvi5YksZM9h/edit?gid=1612760943#gid=1612760943" target="_blank" class="act-lnk">↗ View Checklist</a>
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            Webinar pitches drafted and shared
+            <a href="https://docs.google.com/document/d/1SipQ1RJGlIDGF0qgMka9NP0dBDo2VmFV6mKW4rP_LRg/edit?tab=t.0#heading=h.b2z180a6w50b" target="_blank" class="act-lnk">↗ View Pitches</a>
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            Luma event set up for webinar
+            <a href="https://luma.com/tgsuyey2" target="_blank" class="act-lnk">↗ View Luma Event</a>
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            Webinar sample data compiled and shared
+            <a href="https://docs.google.com/spreadsheets/d/1Cpq3VTBf9sHBX_Wpkx5BeNRJnFYfXTwPv-ScktQwXhI/edit?gid=0#gid=0" target="_blank" class="act-lnk">↗ View Data</a>
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            Website copy drafted and shared for review
+            <a href="https://docs.google.com/document/d/1MoCg2-rbXrSxn_RpATpJzU1MvPEyeStiXM6Iu4b4JAk/edit?usp=sharing" target="_blank" class="act-lnk">↗ View Website Copy</a>
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">
+            Webinar Visual EDM updated and shared
+            <a href="https://drive.google.com/file/d/1_5d4BRlGmTJ1vmhJoe4h5vfalXwzZ7mc/view?usp=drive_link" target="_blank" class="act-lnk">↗ View EDM</a>
+          </div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">Updated sales assets compiled and shared</div>
+        </li>
+
+        <li class="act-row">
+          <div class="act-icon icon-done">✓</div>
+          <div class="act-body">LinkedIn banner designed and shared</div>
+        </li>
+
+      </ul>
+    </div>
+
+    <!-- Pending Review & In Progress -->
+    <div class="card">
+      <div class="card-head"><span class="card-title">Pending Review</span></div>
+
+      <div class="review-row">
+        <span class="review-badge">Review</span>
+        <div>
+          <div class="review-text">Welcome Post — New Joinee (Haddad)</div>
+          <a href="https://agileta.sharepoint.com/:i:/r/sites/NexusesxAvanteNow/Shared%20Documents/Nexuses%20x%20AvanteNow/Social%20Posts/Avantenow%20new%20joinee%20post%20.png?csf=1&web=1&e=cTsxPt" target="_blank" class="review-link">↗ View Post Design</a>
+        </div>
+      </div>
+
+      <div class="review-row">
+        <span class="review-badge">Review</span>
+        <div>
+          <div class="review-text">Webinar LinkedIn Event Setup</div>
+          <a href="https://www.linkedin.com/events/7443269999710011392?viewAsMember=true" target="_blank" class="review-link">↗ View LinkedIn Event</a>
+        </div>
+      </div>
+
+      <div class="review-row">
+        <span class="review-badge">Review</span>
+        <div>
+          <div class="review-text">Updated Webinar Attendee Data</div>
+          <a href="https://docs.google.com/spreadsheets/d/1Cpq3VTBf9sHBX_Wpkx5BeNRJnFYfXTwPv-ScktQwXhI/edit?gid=0#gid=0" target="_blank" class="review-link">↗ View Spreadsheet</a>
+        </div>
+      </div>
+
+      <div class="review-row">
+        <span class="review-badge">Review</span>
+        <div>
+          <div class="review-text">Updated Corporate Deck</div>
+          <a href="https://drive.google.com/file/d/1eqyzpUmZRkNoYQZotafZ2mKW4rP_LRg/view?usp=drive_link" target="_blank" class="review-link">↗ View Deck</a>
+        </div>
+      </div>
+
+      <div class="review-row">
+        <span class="review-badge">Review</span>
+        <div>
+          <div class="review-text">Updated Visual EDM (Revised Version)</div>
+          <a href="https://drive.google.com/file/d/1b76EvuT7BjxP9D9TGcwFgHLu7f-kBmwa/view?usp=drive_link" target="_blank" class="review-link">↗ View EDM</a>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);">
+        <div class="card-head" style="margin-bottom:12px;"><span class="card-title">In Progress</span></div>
+
+        <div class="act-row" style="border:none;padding:0;">
+          <div class="act-icon icon-prog">↻</div>
+          <div class="act-body">
+            Website Homepage Update
+            <span style="display:block;font-size:0.65rem;color:var(--t3);margin-top:2px;">Copy drafted · Design &amp; development underway</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 3: LinkedIn Posts + Assets Created -->
+  <div class="g2 mb">
+
+    <!-- LinkedIn Posts -->
+    <div class="card">
+      <div class="card-head"><span class="card-title">LinkedIn Posts Published</span></div>
+
+      <div class="post-row">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="post-icon">in</div>
+          <div>
+            <div class="post-label">Eid Al Fitr Greetings</div>
+            <div class="post-type">Seasonal / Brand Engagement</div>
+          </div>
+        </div>
+        <a href="https://www.linkedin.com/posts/avantenow_eidmubarak-eidulfitr-activity-7440615652173" target="_blank" class="card-link">↗ View</a>
+      </div>
+
+      <div class="post-row">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="post-icon">in</div>
+          <div>
+            <div class="post-label">German Bank Case Study</div>
+            <div class="post-type">Case Study / Thought Leadership</div>
+          </div>
+        </div>
+        <a href="https://www.linkedin.com/posts/avantenow_german-bank-case-study-activity-7442485079" target="_blank" class="card-link">↗ View</a>
+      </div>
+
+      <div class="post-row">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="post-icon">in</div>
+          <div>
+            <div class="post-label">Webinar LinkedIn Event</div>
+            <div class="post-type">Event / Lead Generation</div>
+          </div>
+        </div>
+        <a href="https://www.linkedin.com/events/7443269999710011392?viewAsMember=true" target="_blank" class="card-link">↗ View</a>
+      </div>
+
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+        <div class="card-title" style="margin-bottom:8px;">Active Campaigns</div>
+        <span class="tag tag-green">Senovo Lead Gen</span>
+        <span class="tag tag-green">Equiti Lead Gen</span>
+        <span class="tag tag-blue">Bright Pattern Webinar</span>
+        <span class="tag tag-amber">AMS Outreach</span>
+      </div>
+    </div>
+
+    <!-- Assets & Collateral Created -->
+    <div class="card">
+      <div class="card-head"><span class="card-title">Assets & Collateral Created</span></div>
+      <div class="asset-grid">
+        <div class="asset-box">
+          <div class="asset-title">AMS 2-Pager</div>
+          <div class="asset-desc">Sales enablement document for AMS outreach</div>
+          <a href="https://docs.google.com/document/d/1nIM3yiI6RxV1Slg7AysDjPZnk8CzSFc5mdRa3At1ETA/edit?usp=sharing" target="_blank" class="asset-link">↗ View</a>
+        </div>
+        <div class="asset-box">
+          <div class="asset-title">Senovo &amp; Equiti Pitches</div>
+          <div class="asset-desc">Email pitch copy for targeted outreach</div>
+          <a href="https://docs.google.com/document/d/1ENiJQyPd8jRTCdpIJsrVvmpiNw1I22UfxKyLwnKxsjQ/edit?usp=sharing" target="_blank" class="asset-link">↗ View</a>
+        </div>
+        <div class="asset-box">
+          <div class="asset-title">Webinar Visual EDM</div>
+          <div class="asset-desc">Designed email for webinar promotion &amp; follow-up</div>
+          <a href="https://drive.google.com/file/d/1_5d4BRlGmTJ1vmhJoe4h5vfalXwzZ7mc/view?usp=drive_link" target="_blank" class="asset-link">↗ View</a>
+        </div>
+        <div class="asset-box">
+          <div class="asset-title">Corporate Deck (Updated)</div>
+          <div class="asset-desc">Revised pitch deck for stakeholder presentations</div>
+          <a href="https://drive.google.com/file/d/1eqyzpUmZRkNoYQZotafZ2mKW4rP_LRg/view?usp=drive_link" target="_blank" class="asset-link">↗ View</a>
+        </div>
+        <div class="asset-box">
+          <div class="asset-title">Webinar Checklist</div>
+          <div class="asset-desc">End-to-end webinar operations tracker</div>
+          <a href="https://docs.google.com/spreadsheets/d/1XB8lqPyHnbjMbXa1tbM2UUvi5YksZM9h/edit?gid=1612760943" target="_blank" class="asset-link">↗ View</a>
+        </div>
+        <div class="asset-box">
+          <div class="asset-title">Website Copy</div>
+          <div class="asset-desc">Homepage and landing page copywriting</div>
+          <a href="https://docs.google.com/document/d/1MoCg2-rbXrSxn_RpATpJzU1MvPEyeStiXM6Iu4b4JAk/edit?usp=sharing" target="_blank" class="asset-link">↗ View</a>
+        </div>
+        <div class="asset-box">
+          <div class="asset-title">LinkedIn Banner</div>
+          <div class="asset-desc">Branded banner for LinkedIn company page</div>
+        </div>
+        <div class="asset-box">
+          <div class="asset-title">Webinar Agenda</div>
+          <div class="asset-desc">Session outline &amp; run-of-show document</div>
+          <a href="https://docs.google.com/document/d/1lYyE_gxdFRYRXbvXwGDua1_lkSqIJ2-56rlX46uwFVU/edit?usp=sharing" target="_blank" class="asset-link">↗ View</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-footer">AvanteNow · Weekly Report · 18 Mar – 27 Mar 2026 · Prepared by Nexuses</div>
+
+</div><!-- end dash-wrap -->
+
+<script>
+// Engagement Chart
+(function(){
+  const ctx = document.getElementById('engagementChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Delivered','Opened','Clicked','Unsubscribed','Spam'],
+      datasets:[{
+        label: 'Bright Pattern Follow-Up',
+        data:[100, 42.6, 0, 0, 0],
+        backgroundColor:['#ccfbf1','#0d9488','#e8eaed','#e8eaed','#e8eaed'],
+        borderColor:['#0d9488','#0f766e','#d1d5db','#d1d5db','#d1d5db'],
+        borderWidth:1,
+        borderRadius:5,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y+'%';}}}},
+      scales:{
+        x:{grid:{display:false},ticks:{font:{size:10},color:'#9ca3af'}},
+        y:{min:0,max:110,ticks:{callback:v=>v+'%',font:{size:10},color:'#9ca3af'},grid:{color:'#f0f1f3'}}
+      }
+    }
+  });
+})();
+
+// Delivery Doughnut
+(function(){
+  const ctx = document.getElementById('deliveryChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Delivered (100%)', 'Blocked (0%)', 'Bounced (0%)'],
+      datasets:[{
+        data:[100, 0.001, 0.001],
+        backgroundColor:['#0d9488','#e8eaed','#f0f1f3'],
+        borderWidth:0,
+        hoverOffset:4,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      cutout:'70%',
+      plugins:{
+        legend:{position:'right',labels:{font:{size:10},color:'#6b7280',boxWidth:10,padding:10}},
+        tooltip:{callbacks:{label:function(c){return c.label;}}}
+      }
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
